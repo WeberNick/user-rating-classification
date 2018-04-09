@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="7.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="7.5.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="read_csv" compatibility="7.5.000" expanded="true" height="68" name="Read Pre Processed Data" width="90" x="45" y="34">
+        <parameter key="csv_file" value="/Users/Nick/Dropbox/Team-Ordner „Data Mining Paper“/Abgabe Ordner (in adaption)/Data/CSV/PRE_PROCESSED_DATA.csv"/>
+        <parameter key="column_separators" value=","/>
+        <parameter key="trim_lines" value="false"/>
+        <parameter key="use_quotes" value="true"/>
+        <parameter key="quotes_character" value="&quot;"/>
+        <parameter key="escape_character" value="\"/>
+        <parameter key="skip_comments" value="false"/>
+        <parameter key="comment_characters" value="#"/>
+        <parameter key="parse_numbers" value="true"/>
+        <parameter key="decimal_character" value="."/>
+        <parameter key="grouped_digits" value="false"/>
+        <parameter key="grouping_character" value=","/>
+        <parameter key="date_format" value=""/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="encoding" value="UTF-8"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="is_singleplayer.true.binominal.attribute"/>
+          <parameter key="1" value="is_multiplayer.true.binominal.attribute"/>
+          <parameter key="2" value="is_cross_platform_multiplayer.true.binominal.attribute"/>
+          <parameter key="3" value="has_split_screen.true.binominal.attribute"/>
+          <parameter key="4" value="has_full_controller_support.true.binominal.attribute"/>
+          <parameter key="5" value="english.true.binominal.attribute"/>
+          <parameter key="6" value="german.true.binominal.attribute"/>
+          <parameter key="7" value="french.true.binominal.attribute"/>
+          <parameter key="8" value="spanish.true.binominal.attribute"/>
+          <parameter key="9" value="russian.true.binominal.attribute"/>
+          <parameter key="10" value="chinese.true.binominal.attribute"/>
+          <parameter key="11" value="korean.true.binominal.attribute"/>
+          <parameter key="12" value="count_packages.true.integer.attribute"/>
+          <parameter key="13" value="developer.true.polynominal.attribute"/>
+          <parameter key="14" value="publisher.true.polynominal.attribute"/>
+          <parameter key="15" value="genre_1.true.nominal.attribute"/>
+          <parameter key="16" value="genre_2.true.nominal.attribute"/>
+          <parameter key="17" value="is_free.true.binominal.attribute"/>
+          <parameter key="18" value="required_age.true.integer.attribute"/>
+          <parameter key="19" value="windows.true.binominal.attribute"/>
+          <parameter key="20" value="mac.true.binominal.attribute"/>
+          <parameter key="21" value="linux.true.binominal.attribute"/>
+          <parameter key="22" value="has_website.true.binominal.attribute"/>
+          <parameter key="23" value="release_year.true.integer.attribute"/>
+          <parameter key="24" value="release_month.true.integer.attribute"/>
+          <parameter key="25" value="price_usd.true.integer.attribute"/>
+          <parameter key="26" value="final_user_score.true.numeric.attribute"/>
+          <parameter key="27" value="appid.true.integer.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="true"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="7.5.000" expanded="true" height="187" name="Multiply" width="90" x="179" y="34"/>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (5 classes with aggregate)" width="90" x="447" y="646">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="very good" value="99.0"/>
+          <parameter key="good" value="89.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+          <parameter key="very bad" value="19.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 5 Classes and Aggregate" width="90" x="581" y="646">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="82" name="Aggregate Developer and Publisher (3)" width="90" x="715" y="646">
+        <process expanded="true">
+          <operator activated="true" class="multiply" compatibility="7.5.000" expanded="true" height="166" name="Multiply (4)" width="90" x="45" y="34"/>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Publisher for each AppID (3)" width="90" x="246" y="238">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Publisher (3)" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="publisher" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="publisher"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and publisher (3)" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|publisher"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Publisher Count (3)" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="publisher" value="publisher"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and publisher (3)" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Publisher (3)" to_port="example set input"/>
+              <connect from_op="Count Publisher (3)" from_port="example set output" to_op="Join AppID with Publisher Count (3)" to_port="right"/>
+              <connect from_op="Select appid and publisher (3)" from_port="example set output" to_op="Join AppID with Publisher Count (3)" to_port="left"/>
+              <connect from_op="Join AppID with Publisher Count (3)" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Developer for each AppID (3)" width="90" x="246" y="85">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Developer (3)" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="developer" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="developer"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and developer (3)" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|developer"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Developer Count (3)" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="developer" value="developer"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and developer (3)" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Developer (3)" to_port="example set input"/>
+              <connect from_op="Count Developer (3)" from_port="example set output" to_op="Join AppID with Developer Count (3)" to_port="right"/>
+              <connect from_op="Select appid and developer (3)" from_port="example set output" to_op="Join AppID with Developer Count (3)" to_port="left"/>
+              <connect from_op="Join AppID with Developer Count (3)" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Developer Count with Publisher Count (3)" width="90" x="447" y="136">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Counter with Data (3)" width="90" x="648" y="34">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="filter_examples" compatibility="7.5.000" expanded="true" height="103" name="Filter Developer and Publisher &lt; 3 (3)" width="90" x="782" y="34">
+            <parameter key="parameter_expression" value=""/>
+            <parameter key="condition_class" value="custom_filters"/>
+            <parameter key="invert_filter" value="false"/>
+            <list key="filters_list">
+              <parameter key="filters_entry_key" value="count(developer).ge.3"/>
+              <parameter key="filters_entry_key" value="count(publisher).ge.3"/>
+            </list>
+            <parameter key="filters_logic_and" value="true"/>
+            <parameter key="filters_check_metadata" value="true"/>
+          </operator>
+          <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Remove Count Attributes (3)" width="90" x="916" y="34">
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value="count(developer)|count(publisher)"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+          </operator>
+          <connect from_port="in 1" to_op="Multiply (4)" to_port="input"/>
+          <connect from_op="Multiply (4)" from_port="output 1" to_op="Join Counter with Data (3)" to_port="left"/>
+          <connect from_op="Multiply (4)" from_port="output 2" to_op="Count Developer for each AppID (3)" to_port="in 1"/>
+          <connect from_op="Multiply (4)" from_port="output 3" to_op="Count Developer for each AppID (3)" to_port="in 2"/>
+          <connect from_op="Multiply (4)" from_port="output 4" to_op="Count Publisher for each AppID (3)" to_port="in 1"/>
+          <connect from_op="Multiply (4)" from_port="output 5" to_op="Count Publisher for each AppID (3)" to_port="in 2"/>
+          <connect from_op="Count Publisher for each AppID (3)" from_port="out 1" to_op="Join Developer Count with Publisher Count (3)" to_port="right"/>
+          <connect from_op="Count Developer for each AppID (3)" from_port="out 1" to_op="Join Developer Count with Publisher Count (3)" to_port="left"/>
+          <connect from_op="Join Developer Count with Publisher Count (3)" from_port="join" to_op="Join Counter with Data (3)" to_port="right"/>
+          <connect from_op="Join Counter with Data (3)" from_port="join" to_op="Filter Developer and Publisher &lt; 3 (3)" to_port="example set input"/>
+          <connect from_op="Filter Developer and Publisher &lt; 3 (3)" from_port="example set output" to_op="Remove Count Attributes (3)" to_port="example set input"/>
+          <connect from_op="Remove Count Attributes (3)" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 5_classes_with_aggregate" width="90" x="849" y="646">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_5_classes_with_aggregate"/>
+      </operator>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (5 classes)" width="90" x="447" y="544">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="very good" value="99.0"/>
+          <parameter key="good" value="89.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+          <parameter key="very bad" value="19.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 5 Classes" width="90" x="581" y="544">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 5_classes" width="90" x="715" y="544">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_5_classes"/>
+      </operator>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (4 classes with aggregate)" width="90" x="447" y="391">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="very good" value="99.0"/>
+          <parameter key="good" value="89.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 4 Classes and Aggregate" width="90" x="581" y="391">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="82" name="Aggregate Developer and Publisher (2)" width="90" x="715" y="391">
+        <process expanded="true">
+          <operator activated="true" class="multiply" compatibility="7.5.000" expanded="true" height="166" name="Multiply (2)" width="90" x="45" y="34"/>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Publisher for each AppID (2)" width="90" x="246" y="238">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Publisher (2)" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="publisher" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="publisher"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and publisher (2)" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|publisher"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Publisher Count (2)" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="publisher" value="publisher"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and publisher (2)" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Publisher (2)" to_port="example set input"/>
+              <connect from_op="Count Publisher (2)" from_port="example set output" to_op="Join AppID with Publisher Count (2)" to_port="right"/>
+              <connect from_op="Select appid and publisher (2)" from_port="example set output" to_op="Join AppID with Publisher Count (2)" to_port="left"/>
+              <connect from_op="Join AppID with Publisher Count (2)" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Developer for each AppID (2)" width="90" x="246" y="85">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Developer (2)" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="developer" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="developer"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and developer (2)" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|developer"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Developer Count (2)" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="developer" value="developer"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and developer (2)" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Developer (2)" to_port="example set input"/>
+              <connect from_op="Count Developer (2)" from_port="example set output" to_op="Join AppID with Developer Count (2)" to_port="right"/>
+              <connect from_op="Select appid and developer (2)" from_port="example set output" to_op="Join AppID with Developer Count (2)" to_port="left"/>
+              <connect from_op="Join AppID with Developer Count (2)" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Developer Count with Publisher Count (2)" width="90" x="447" y="136">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Counter with Data (2)" width="90" x="648" y="34">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="filter_examples" compatibility="7.5.000" expanded="true" height="103" name="Filter Developer and Publisher &lt; 3 (2)" width="90" x="782" y="34">
+            <parameter key="parameter_expression" value=""/>
+            <parameter key="condition_class" value="custom_filters"/>
+            <parameter key="invert_filter" value="false"/>
+            <list key="filters_list">
+              <parameter key="filters_entry_key" value="count(developer).ge.3"/>
+              <parameter key="filters_entry_key" value="count(publisher).ge.3"/>
+            </list>
+            <parameter key="filters_logic_and" value="true"/>
+            <parameter key="filters_check_metadata" value="true"/>
+          </operator>
+          <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Remove Count Attributes (2)" width="90" x="916" y="34">
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value="count(developer)|count(publisher)"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+          </operator>
+          <connect from_port="in 1" to_op="Multiply (2)" to_port="input"/>
+          <connect from_op="Multiply (2)" from_port="output 1" to_op="Join Counter with Data (2)" to_port="left"/>
+          <connect from_op="Multiply (2)" from_port="output 2" to_op="Count Developer for each AppID (2)" to_port="in 1"/>
+          <connect from_op="Multiply (2)" from_port="output 3" to_op="Count Developer for each AppID (2)" to_port="in 2"/>
+          <connect from_op="Multiply (2)" from_port="output 4" to_op="Count Publisher for each AppID (2)" to_port="in 1"/>
+          <connect from_op="Multiply (2)" from_port="output 5" to_op="Count Publisher for each AppID (2)" to_port="in 2"/>
+          <connect from_op="Count Publisher for each AppID (2)" from_port="out 1" to_op="Join Developer Count with Publisher Count (2)" to_port="right"/>
+          <connect from_op="Count Developer for each AppID (2)" from_port="out 1" to_op="Join Developer Count with Publisher Count (2)" to_port="left"/>
+          <connect from_op="Join Developer Count with Publisher Count (2)" from_port="join" to_op="Join Counter with Data (2)" to_port="right"/>
+          <connect from_op="Join Counter with Data (2)" from_port="join" to_op="Filter Developer and Publisher &lt; 3 (2)" to_port="example set input"/>
+          <connect from_op="Filter Developer and Publisher &lt; 3 (2)" from_port="example set output" to_op="Remove Count Attributes (2)" to_port="example set input"/>
+          <connect from_op="Remove Count Attributes (2)" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 4_classes_with_aggregate" width="90" x="849" y="391">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_4_classes_with_aggregate"/>
+      </operator>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (4 classes)" width="90" x="447" y="289">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="very good" value="99.0"/>
+          <parameter key="good" value="89.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 4 Classes" width="90" x="581" y="289">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 4_classes" width="90" x="715" y="289">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_4_classes"/>
+      </operator>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (3 classes with aggregate)" width="90" x="447" y="136">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="good" value="99.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 3 Classes and Aggregate" width="90" x="581" y="136">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="82" name="Aggregate Developer and Publisher" width="90" x="715" y="136">
+        <process expanded="true">
+          <operator activated="true" class="multiply" compatibility="7.5.000" expanded="true" height="166" name="Multiply (3)" width="90" x="45" y="34"/>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Publisher for each AppID" width="90" x="246" y="238">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Publisher" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="publisher" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="publisher"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and publisher" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|publisher"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Publisher Count" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="publisher" value="publisher"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and publisher" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Publisher" to_port="example set input"/>
+              <connect from_op="Count Publisher" from_port="example set output" to_op="Join AppID with Publisher Count" to_port="right"/>
+              <connect from_op="Select appid and publisher" from_port="example set output" to_op="Join AppID with Publisher Count" to_port="left"/>
+              <connect from_op="Join AppID with Publisher Count" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="subprocess" compatibility="7.5.000" expanded="true" height="103" name="Count Developer for each AppID" width="90" x="246" y="85">
+            <process expanded="true">
+              <operator activated="true" class="aggregate" compatibility="7.4.000" expanded="true" height="82" name="Count Developer" width="90" x="112" y="136">
+                <parameter key="use_default_aggregation" value="false"/>
+                <parameter key="attribute_filter_type" value="all"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value=""/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="default_aggregation_function" value="average"/>
+                <list key="aggregation_attributes">
+                  <parameter key="developer" value="count"/>
+                </list>
+                <parameter key="group_by_attributes" value="developer"/>
+                <parameter key="count_all_combinations" value="false"/>
+                <parameter key="only_distinct" value="false"/>
+                <parameter key="ignore_missings" value="true"/>
+              </operator>
+              <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Select appid and developer" width="90" x="112" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="appid|developer"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join AppID with Developer Count" width="90" x="313" y="34">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="developer" value="developer"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="false"/>
+              </operator>
+              <connect from_port="in 1" to_op="Select appid and developer" to_port="example set input"/>
+              <connect from_port="in 2" to_op="Count Developer" to_port="example set input"/>
+              <connect from_op="Count Developer" from_port="example set output" to_op="Join AppID with Developer Count" to_port="right"/>
+              <connect from_op="Select appid and developer" from_port="example set output" to_op="Join AppID with Developer Count" to_port="left"/>
+              <connect from_op="Join AppID with Developer Count" from_port="join" to_port="out 1"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="source_in 3" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Developer Count with Publisher Count" width="90" x="447" y="136">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="join" compatibility="7.5.000" expanded="true" height="82" name="Join Counter with Data" width="90" x="648" y="34">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="false"/>
+            <list key="key_attributes">
+              <parameter key="appid" value="appid"/>
+            </list>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <operator activated="true" class="filter_examples" compatibility="7.5.000" expanded="true" height="103" name="Filter Developer and Publisher &lt; 3" width="90" x="782" y="34">
+            <parameter key="parameter_expression" value=""/>
+            <parameter key="condition_class" value="custom_filters"/>
+            <parameter key="invert_filter" value="false"/>
+            <list key="filters_list">
+              <parameter key="filters_entry_key" value="count(developer).ge.3"/>
+              <parameter key="filters_entry_key" value="count(publisher).ge.3"/>
+            </list>
+            <parameter key="filters_logic_and" value="true"/>
+            <parameter key="filters_check_metadata" value="true"/>
+          </operator>
+          <operator activated="true" class="select_attributes" compatibility="7.5.000" expanded="true" height="82" name="Remove Count Attributes" width="90" x="916" y="34">
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value="count(developer)|count(publisher)"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+          </operator>
+          <connect from_port="in 1" to_op="Multiply (3)" to_port="input"/>
+          <connect from_op="Multiply (3)" from_port="output 1" to_op="Join Counter with Data" to_port="left"/>
+          <connect from_op="Multiply (3)" from_port="output 2" to_op="Count Developer for each AppID" to_port="in 1"/>
+          <connect from_op="Multiply (3)" from_port="output 3" to_op="Count Developer for each AppID" to_port="in 2"/>
+          <connect from_op="Multiply (3)" from_port="output 4" to_op="Count Publisher for each AppID" to_port="in 1"/>
+          <connect from_op="Multiply (3)" from_port="output 5" to_op="Count Publisher for each AppID" to_port="in 2"/>
+          <connect from_op="Count Publisher for each AppID" from_port="out 1" to_op="Join Developer Count with Publisher Count" to_port="right"/>
+          <connect from_op="Count Developer for each AppID" from_port="out 1" to_op="Join Developer Count with Publisher Count" to_port="left"/>
+          <connect from_op="Join Developer Count with Publisher Count" from_port="join" to_op="Join Counter with Data" to_port="right"/>
+          <connect from_op="Join Counter with Data" from_port="join" to_op="Filter Developer and Publisher &lt; 3" to_port="example set input"/>
+          <connect from_op="Filter Developer and Publisher &lt; 3" from_port="example set output" to_op="Remove Count Attributes" to_port="example set input"/>
+          <connect from_op="Remove Count Attributes" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 3_classes_with_aggregate" width="90" x="849" y="136">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_3_classes_with_aggregate"/>
+      </operator>
+      <operator activated="true" class="discretize_by_user_specification" compatibility="7.5.000" expanded="true" height="103" name="Discretize User Score (3 classes)" width="90" x="447" y="34">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="final_user_score"/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <list key="classes">
+          <parameter key="good" value="99.0"/>
+          <parameter key="neutral" value="74.0"/>
+          <parameter key="bad" value="49.0"/>
+        </list>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="7.5.000" expanded="true" height="82" name="Set Label 3 Classes" width="90" x="581" y="34">
+        <parameter key="attribute_name" value="final_user_score"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="7.5.000" expanded="true" height="68" name="Store 3_classes" width="90" x="715" y="34">
+        <parameter key="repository_entry" value="//Local Repository/DataMiningTeamProject/Data/Data_3_classes"/>
+      </operator>
+      <connect from_op="Read Pre Processed Data" from_port="output" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Discretize User Score (3 classes)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Discretize User Score (3 classes with aggregate)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 3" to_op="Discretize User Score (4 classes)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 4" to_op="Discretize User Score (4 classes with aggregate)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 5" to_op="Discretize User Score (5 classes)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 6" to_op="Discretize User Score (5 classes with aggregate)" to_port="example set input"/>
+      <connect from_op="Discretize User Score (5 classes with aggregate)" from_port="example set output" to_op="Set Label 5 Classes and Aggregate" to_port="example set input"/>
+      <connect from_op="Set Label 5 Classes and Aggregate" from_port="example set output" to_op="Aggregate Developer and Publisher (3)" to_port="in 1"/>
+      <connect from_op="Aggregate Developer and Publisher (3)" from_port="out 1" to_op="Store 5_classes_with_aggregate" to_port="input"/>
+      <connect from_op="Discretize User Score (5 classes)" from_port="example set output" to_op="Set Label 5 Classes" to_port="example set input"/>
+      <connect from_op="Set Label 5 Classes" from_port="example set output" to_op="Store 5_classes" to_port="input"/>
+      <connect from_op="Discretize User Score (4 classes with aggregate)" from_port="example set output" to_op="Set Label 4 Classes and Aggregate" to_port="example set input"/>
+      <connect from_op="Set Label 4 Classes and Aggregate" from_port="example set output" to_op="Aggregate Developer and Publisher (2)" to_port="in 1"/>
+      <connect from_op="Aggregate Developer and Publisher (2)" from_port="out 1" to_op="Store 4_classes_with_aggregate" to_port="input"/>
+      <connect from_op="Discretize User Score (4 classes)" from_port="example set output" to_op="Set Label 4 Classes" to_port="example set input"/>
+      <connect from_op="Set Label 4 Classes" from_port="example set output" to_op="Store 4_classes" to_port="input"/>
+      <connect from_op="Discretize User Score (3 classes with aggregate)" from_port="example set output" to_op="Set Label 3 Classes and Aggregate" to_port="example set input"/>
+      <connect from_op="Set Label 3 Classes and Aggregate" from_port="example set output" to_op="Aggregate Developer and Publisher" to_port="in 1"/>
+      <connect from_op="Aggregate Developer and Publisher" from_port="out 1" to_op="Store 3_classes_with_aggregate" to_port="input"/>
+      <connect from_op="Discretize User Score (3 classes)" from_port="example set output" to_op="Set Label 3 Classes" to_port="example set input"/>
+      <connect from_op="Set Label 3 Classes" from_port="example set output" to_op="Store 3_classes" to_port="input"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <description align="right" color="yellow" colored="true" height="244" resized="true" width="581" x="418" y="271">Two scenarios for&lt;br/&gt; 4 different classes.</description>
+      <description align="center" color="yellow" colored="false" height="74" resized="true" width="189" x="77" y="280">Generation of 3*2 = 6 different test scenarios for classification.</description>
+      <description align="right" color="yellow" colored="true" height="244" resized="false" width="581" x="418" y="15">Two scenarios for&lt;br&gt;3 different classes.</description>
+      <description align="right" color="yellow" colored="true" height="244" resized="false" width="581" x="419" y="530">Two scenarios for&lt;br&gt;5 different classes.</description>
+    </process>
+  </operator>
+</process>
